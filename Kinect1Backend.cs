@@ -17,14 +17,16 @@ namespace MultiKinectVR {
         HandLeft2     = JointType.HandLeft,
         HandRight1    = JointType.WristRight,
         HandRight2    = JointType.HandRight,
+        Head1         = JointType.Head,
+        Head2         = JointType.ShoulderCenter,
         FootLeft1     = JointType.AnkleLeft,
         FootLeft2     = JointType.FootLeft,
         FootLeftHigh  = JointType.KneeLeft,
         FootRight1    = JointType.AnkleRight,
         FootRight2    = JointType.FootRight,
         FootRightHigh = JointType.KneeRight,
-        Head1         = JointType.Head,
-        Head2         = JointType.ShoulderCenter,
+        Hip1          = JointType.HipCenter,
+        Hip2          = JointType.Spine,
     }
     public class Kinect1Data {
         private KinectSensor sensor;
@@ -76,7 +78,7 @@ namespace MultiKinectVR {
             return this.sensors.Length;
         }
         public Kinect1Data GetKinect(int id) {
-            if (id > 0 && id < this.sensors.Length) {
+            if (id >= 0 && id < this.sensors.Length) {
                 return this.sensors[id];
             } else {
                 return null;

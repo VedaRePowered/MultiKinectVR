@@ -29,21 +29,24 @@ namespace MultiKinectVR {
         HandLeft2,
         HandRight1,
         HandRight2,
+        Head1,
+        Head2,
         FootLeft1,
         FootLeft2,
         FootLeftHigh,
         FootRight1,
         FootRight2,
         FootRightHigh,
-        Head1,
-        Head2,
+        Hip1,
+        Hip2,
     }
     public enum JointName {
         HandLeft,
         HandRight,
+        Head,
         FootLeft,
         FootRight,
-        Head,
+        Hip,
     }
     public class KinectMultiBackend {
         private Kinect1Backend kv1;
@@ -71,14 +74,16 @@ namespace MultiKinectVR {
                     case RawJointName.HandLeft2: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.HandLeft2));
                     case RawJointName.HandRight1: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.HandRight1));
                     case RawJointName.HandRight2: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.HandRight2));
+                    case RawJointName.Head1: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.Head1));
+                    case RawJointName.Head2: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.Head2));
                     case RawJointName.FootLeft1: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.FootLeft1));
                     case RawJointName.FootLeft2: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.FootLeft2));
                     case RawJointName.FootLeftHigh: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.FootLeftHigh));
                     case RawJointName.FootRight1: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.FootRight1));
                     case RawJointName.FootRight2: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.FootRight2));
                     case RawJointName.FootRightHigh: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.FootRightHigh));
-                    case RawJointName.Head1: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.Head1));
-                    case RawJointName.Head2: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.Head2));
+                    case RawJointName.Hip1: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.Hip1));
+                    case RawJointName.Hip2: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.Hip2));
                     default: return Position.Invalid;
                 }
             } else {
@@ -111,8 +116,15 @@ namespace MultiKinectVR {
                 case JointName.Head: return smartAverage(this.GetRawJoint(sensor, skeleton, RawJointName.Head1), this.GetRawJoint(sensor, skeleton, RawJointName.Head2));
                 case JointName.FootLeft: return footAverage(this.GetRawJoint(sensor, skeleton, RawJointName.FootLeft1), this.GetRawJoint(sensor, skeleton, RawJointName.FootLeft2), this.GetRawJoint(sensor, skeleton, RawJointName.FootLeftHigh));
                 case JointName.FootRight: return footAverage(this.GetRawJoint(sensor, skeleton, RawJointName.FootRight1), this.GetRawJoint(sensor, skeleton, RawJointName.FootRight2), this.GetRawJoint(sensor, skeleton, RawJointName.FootRightHigh));
+                case JointName.Hip: return smartAverage(this.GetRawJoint(sensor, skeleton, RawJointName.Hip1), this.GetRawJoint(sensor, skeleton, RawJointName.Hip2));
                 default: return Position.Invalid;
             }
+        }
+        public void Update() {
+
+        }
+        public Position GetCombinedJoint() {
+            return Position.Invalid;
         }
     }
 }
