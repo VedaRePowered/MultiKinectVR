@@ -1,0 +1,8 @@
+﻿{
+	"alwaysActivate": true,
+	"name": "mkvr",
+	"directory": "",
+	"resourceOnly": true,
+	"hmd_presence": [],
+	"other_presence": ["*.*"],
+}
