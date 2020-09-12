@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Microsoft.Kinect;
 
 namespace MultiKinectVR {
-    public struct Kinect1Position {
+    public struct Kinect2Position {
         public double X;
         public double Y;
         public double Z;
     }
-    public enum Kinect1JointName {
+    public enum Kinect2JointName {
         HandLeft1     = JointType.WristLeft,
         HandLeft2     = JointType.HandLeft,
         HandRight1    = JointType.WristRight,
@@ -28,12 +28,12 @@ namespace MultiKinectVR {
         Hip1          = JointType.HipCenter,
         Hip2          = JointType.Spine,
     }
-    public class Kinect1Data {
+    public class Kinect2Data {
         private readonly KinectSensor sensor;
         private Skeleton[] skeletons;
         private readonly bool usable;
         public bool Enabled;
-        public Kinect1Data(KinectSensor sensor) {
+        public Kinect2Data(KinectSensor sensor) {
             this.sensor = sensor;
             try {
                 this.sensor.Start();
@@ -62,19 +62,19 @@ namespace MultiKinectVR {
             this.Update();
             return this.skeletons.Length;
         }
-        public Kinect1Position GetJoint(int skeleton, Kinect1JointName id) {
+        public Kinect2Position GetJoint(int skeleton, Kinect2JointName id) {
             this.Update();
             SkeletonPoint pos = this.skeletons[skeleton].Joints[(JointType)id].Position;
-            return new Kinect1Position() { X = pos.X, Y = pos.Y, Z = pos.Z };
+            return new Kinect2Position() { X = pos.X, Y = pos.Y, Z = pos.Z };
         }
     }
-    public class Kinect1Backend {
+    public class Kinect2Backend {
         private readonly int totalSensors = 0;
-        private readonly Kinect1Data[] sensors;
-        public Kinect1Backend() {
-            this.sensors = new Kinect1Data[KinectSensor.KinectSensors.Count];
+        private readonly Kinect2Data[] sensors;
+        public Kinect2Backend() {
+            this.sensors = new Kinect2Data[KinectSensor.KinectSensors.Count];
             for (int i = 0; i < KinectSensor.KinectSensors.Count; i++) {
-                Kinect1Data sensor = new Kinect1Data(KinectSensor.KinectSensors[i]);
+                Kinect2Data sensor = new Kinect2Data(KinectSensor.KinectSensors[i]);
                 if (sensor.IsUsable()) {
                     this.sensors[i] = sensor;
                 }
@@ -89,14 +89,14 @@ namespace MultiKinectVR {
         }
         public int GetEnabledKinectCount() {
             int enabled = 0;
-            foreach (Kinect1Data sensor in this.sensors) {
+            foreach (Kinect2Data sensor in this.sensors) {
                 if (sensor.Enabled) {
                     enabled++;
                 }
             }
             return enabled;
         }
-        public Kinect1Data GetKinect(int id) {
+        public Kinect2Data GetKinect(int id) {
             if (id >= 0 && id < this.sensors.Length) {
                 return this.sensors[id];
             } else {

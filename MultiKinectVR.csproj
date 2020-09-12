@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Kinect2Backend.cs" />
     <Compile Include="Kinect1Backend.cs" />
     <Compile Include="KinectMultiBackend.cs" />
     <Compile Include="MainWindow.cs">

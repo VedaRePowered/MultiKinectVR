@@ -12,9 +12,8 @@ using System.Windows.Forms;
 
 namespace TestKinectCS {
     public partial class MainWindow : Form {
-        private Timer timer = new Timer();
-        private Font font = new Font("Arial", 12);
-        private KinectMultiBackend backend;
+        private readonly Timer timer = new Timer();
+        private readonly KinectMultiBackend backend;
         private int kinectCount = 0;
         public MainWindow(KinectMultiBackend backend) {
             InitializeComponent();
@@ -26,9 +25,17 @@ namespace TestKinectCS {
             this.timer.Start();
             this.kinectSelect.Items.Add("No Preview");
             this.kinectSelect.SelectedIndex = 0;
+            this.connectionPage.Enter += ConnectionPage_Enter;
+        }
+
+        private void ConnectionPage_Enter(object sender, EventArgs ev) {
+            this.kinnect1Count.Text = this.backend.GetTotalV1KinectCount().ToString();
+            this.kinnect1Usable.Text = this.backend.GetUsableV1KinectCount().ToString();
+            this.kinnect1Enabled.Text = this.backend.GetEnabledV1KinectCount().ToString();
         }
 
         private void Frame(object sender, EventArgs ev) {
+            this.backend.Update();
             this.kinectView.Refresh();
         }
 
