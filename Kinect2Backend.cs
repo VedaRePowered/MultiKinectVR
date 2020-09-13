@@ -18,53 +18,54 @@ namespace MultiKinectVR {
         HandRight1    = JointType.WristRight,
         HandRight2    = JointType.HandRight,
         Head1         = JointType.Head,
-        Head2         = JointType.ShoulderCenter,
+        Head2         = JointType.SpineShoulder,
         FootLeft1     = JointType.AnkleLeft,
         FootLeft2     = JointType.FootLeft,
         FootLeftHigh  = JointType.KneeLeft,
         FootRight1    = JointType.AnkleRight,
         FootRight2    = JointType.FootRight,
         FootRightHigh = JointType.KneeRight,
-        Hip1          = JointType.HipCenter,
-        Hip2          = JointType.Spine,
+        Hip1          = JointType.SpineBase,
+        Hip2          = JointType.SpineMid,
     }
     public class Kinect2Data {
         private readonly KinectSensor sensor;
-        private Skeleton[] skeletons;
-        private readonly bool usable;
+        private readonly BodyFrameReader bodyReader;
+        private Body[] skeletons;
+        readonly bool Usable;
         public bool Enabled;
         public Kinect2Data(KinectSensor sensor) {
             this.sensor = sensor;
             try {
-                this.sensor.Start();
+                this.sensor.Open();
             } catch (IOException) {
-                this.usable = false;
+                this.Usable = false;
                 return;
             } catch (InvalidOperationException) {
-                this.usable = false;
+                this.Usable = false;
                 return;
             }
-            this.sensor.SkeletonStream.Enable();
-            this.usable = true;
+            this.bodyReader = this.sensor.BodyFrameSource.OpenReader();
+            this.Usable = true;
         }
         public bool IsUsable() {
-            return this.usable && this.sensor.Status == KinectStatus.Connected;
+            return this.Usable;
         }
         private void Update() {
-            SkeletonFrame nextFrame = sensor.SkeletonStream.OpenNextFrame(0);
+            BodyFrame nextFrame = this.bodyReader.AcquireLatestFrame();
             if (nextFrame != null) {
-                this.skeletons = new Skeleton[nextFrame.SkeletonArrayLength];
-                nextFrame.CopySkeletonDataTo(this.skeletons);
+                this.skeletons = new Body[nextFrame.BodyCount];
+                nextFrame.GetAndRefreshBodyData(this.skeletons);
                 nextFrame.Dispose();
             }
         }
         public int GetSkeletonCount() {
             this.Update();
-            return this.skeletons.Length;
+            return this.skeletons?.Length ?? 0;
         }
         public Kinect2Position GetJoint(int skeleton, Kinect2JointName id) {
             this.Update();
-            SkeletonPoint pos = this.skeletons[skeleton].Joints[(JointType)id].Position;
+            CameraSpacePoint pos = this.skeletons[skeleton].Joints[(JointType)id].Position;
             return new Kinect2Position() { X = pos.X, Y = pos.Y, Z = pos.Z };
         }
     }
@@ -72,14 +73,12 @@ namespace MultiKinectVR {
         private readonly int totalSensors = 0;
         private readonly Kinect2Data[] sensors;
         public Kinect2Backend() {
-            this.sensors = new Kinect2Data[KinectSensor.KinectSensors.Count];
-            for (int i = 0; i < KinectSensor.KinectSensors.Count; i++) {
-                Kinect2Data sensor = new Kinect2Data(KinectSensor.KinectSensors[i]);
-                if (sensor.IsUsable()) {
-                    this.sensors[i] = sensor;
-                }
-                this.totalSensors += 1;
+            this.sensors = new Kinect2Data[1];
+            Kinect2Data sensor = new Kinect2Data(KinectSensor.GetDefault());
+            if (sensor.IsUsable()) {
+                this.sensors[0] = sensor;
             }
+            this.totalSensors += 1;
         }
         public int GetTotalKinectCount() {
             return this.totalSensors;

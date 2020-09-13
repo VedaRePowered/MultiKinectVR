@@ -10,12 +10,13 @@ namespace MultiKinectVR {
         public double Y;
         public double Z;
         public bool Valid;
+        /*
         public Position(Kinect1Position pos) {
             this.X = pos.X;
             this.Y = pos.Y;
             this.Z = pos.Z;
             this.Valid = pos.Z > 0.0;
-        }
+        } // */
         public Position(Kinect2Position pos) {
             this.X = pos.X;
             this.Y = pos.Y;
