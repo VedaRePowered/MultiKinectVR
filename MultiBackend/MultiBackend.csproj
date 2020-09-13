@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kinect1Backend\Kinect1Backend.csproj" />
+    <ProjectReference Include="..\Kinect2Backend\Kinect2Backend.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+
+</Project>

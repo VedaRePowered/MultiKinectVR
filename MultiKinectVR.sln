@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiKinectVR", "MultiKinectVR.csproj", "{55EE87B9-B944-44D1-A86B-81AF1CBC7A79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsUI", "WindowsUI\WindowsUI.csproj", "{55EE87B9-B944-44D1-A86B-81AF1CBC7A79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kinect1Backend", "Kinect1Backend\Kinect1Backend.csproj", "{69AAE775-035C-4356-BA00-6D4699C8BFB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kinect2Backend", "Kinect2Backend\Kinect2Backend.csproj", "{A76C8183-BE9E-43D5-941F-5B7BC4748CF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiBackend", "MultiBackend\MultiBackend.csproj", "{205ACA5D-2274-45E8-A05F-F40AD5898D9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{55EE87B9-B944-44D1-A86B-81AF1CBC7A79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55EE87B9-B944-44D1-A86B-81AF1CBC7A79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55EE87B9-B944-44D1-A86B-81AF1CBC7A79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69AAE775-035C-4356-BA00-6D4699C8BFB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69AAE775-035C-4356-BA00-6D4699C8BFB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69AAE775-035C-4356-BA00-6D4699C8BFB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69AAE775-035C-4356-BA00-6D4699C8BFB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A76C8183-BE9E-43D5-941F-5B7BC4748CF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A76C8183-BE9E-43D5-941F-5B7BC4748CF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A76C8183-BE9E-43D5-941F-5B7BC4748CF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A76C8183-BE9E-43D5-941F-5B7BC4748CF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{205ACA5D-2274-45E8-A05F-F40AD5898D9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{205ACA5D-2274-45E8-A05F-F40AD5898D9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{205ACA5D-2274-45E8-A05F-F40AD5898D9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{205ACA5D-2274-45E8-A05F-F40AD5898D9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,13 +10,12 @@ namespace MultiKinectVR {
         public double Y;
         public double Z;
         public bool Valid;
-        /*
         public Position(Kinect1Position pos) {
             this.X = pos.X;
             this.Y = pos.Y;
             this.Z = pos.Z;
             this.Valid = pos.Z > 0.0;
-        } // */
+        }
         public Position(Kinect2Position pos) {
             this.X = pos.X;
             this.Y = pos.Y;
@@ -57,26 +56,48 @@ namespace MultiKinectVR {
         _Length,
     }
     public class KinectMultiBackend {
-        private readonly Kinect2Backend kv1;
+        private readonly Kinect1Backend kv1;
+        private readonly Kinect2Backend kv2;
         private readonly Queue<Position[]> skeletonHistory;
         private const int skeletonHistoryLength = 5;
-        //private Kinect2Backend kv2; TODO: Xbox One Kinect Support
         public KinectMultiBackend() {
             this.skeletonHistory = new Queue<Position[]>();
-            this.kv1 = new Kinect2Backend();
-            //kv2 = new Kinect2Backend();
+            this.kv1 = new Kinect1Backend();
+            this.kv2 = new Kinect2Backend();
         }
         public int GetKinectCount() {
-            return this.kv1.GetUsableKinectCount();
+            return this.kv1.GetUsableKinectCount() + this.kv2.GetUsableKinectCount();
         }
         public int GetSkeletonCount(int sensor) {
-            return this.kv1.GetKinect(sensor).GetSkeletonCount();
+            return this.kv1.GetKinect(sensor)?.GetSkeletonCount() ?? this.kv2.GetKinect(sensor)?.GetSkeletonCount() ?? 0;
         }
         public Position GetRawJoint(int sensor, int skeleton, RawJointName id) {
             if (sensor < 0) {
                 return Position.Invalid;
             } else if (sensor < this.kv1.GetUsableKinectCount()) {
-                Kinect2Data kinect = this.kv1.GetKinect(sensor);
+                Kinect1Data kinect = this.kv1.GetKinect(sensor);
+                if (kinect == null) {
+                    return Position.Invalid;
+                }
+                switch (id) { // TODO: Move these to kv1 and kv2, make both extend a shared interface
+                    case RawJointName.HandLeft1: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.HandLeft1));
+                    case RawJointName.HandLeft2: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.HandLeft2));
+                    case RawJointName.HandRight1: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.HandRight1));
+                    case RawJointName.HandRight2: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.HandRight2));
+                    case RawJointName.Head1: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.Head1));
+                    case RawJointName.Head2: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.Head2));
+                    case RawJointName.FootLeft1: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.FootLeft1));
+                    case RawJointName.FootLeft2: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.FootLeft2));
+                    case RawJointName.FootLeftHigh: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.FootLeftHigh));
+                    case RawJointName.FootRight1: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.FootRight1));
+                    case RawJointName.FootRight2: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.FootRight2));
+                    case RawJointName.FootRightHigh: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.FootRightHigh));
+                    case RawJointName.Hip1: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.Hip1));
+                    case RawJointName.Hip2: return new Position(kinect.GetJoint(skeleton, Kinect1JointName.Hip2));
+                    default: return Position.Invalid;
+                }
+            } else if (sensor < this.kv1.GetUsableKinectCount() + this.kv2.GetUsableKinectCount()) {
+                Kinect2Data kinect = this.kv2.GetKinect(sensor);
                 if (kinect == null) {
                     return Position.Invalid;
                 }
@@ -139,6 +160,15 @@ namespace MultiKinectVR {
         }
         public int GetEnabledV1KinectCount() {
             return this.kv1.GetEnabledKinectCount();
+        }
+        public int GetTotalV2KinectCount() {
+            return this.kv2.GetTotalKinectCount();
+        }
+        public int GetUsableV2KinectCount() {
+            return this.kv2.GetUsableKinectCount();
+        }
+        public int GetEnabledV2KinectCount() {
+            return this.kv2.GetEnabledKinectCount();
         }
         public Position GetCombinedJoint(JointName id) {
             return Position.Invalid;
